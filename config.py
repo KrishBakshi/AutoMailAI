@@ -3,9 +3,9 @@ from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
 
-def write_email(name, company, ai_email):
 
-    output_folder = './output'
+def write_email(name, company, ai_email):
+    output_folder = "./output"
     # Create a new Word document
     doc = Document()
 
@@ -22,12 +22,13 @@ def write_email(name, company, ai_email):
 
     # Set vertical spacing (before and after paragraph)
     paragraph.paragraph_format.space_before = Pt(10)  # 10pt space before paragraph
-    paragraph.paragraph_format.space_after = Pt(10)   # 10pt space after paragraph
-    paragraph.paragraph_format.line_spacing = 1.0     # 1.5 line spacing
+    paragraph.paragraph_format.space_after = Pt(10)  # 10pt space after paragraph
+    paragraph.paragraph_format.line_spacing = 1.0  # 1.5 line spacing
 
     # Save the document
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
-    
+
     doc.save(os.path.join(output_folder, f"{name}, {company}.docx"))
-    
+
+    return f"Email for {name}, {company} has been saved as a Word document."
