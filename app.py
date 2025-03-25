@@ -4,17 +4,17 @@ import utils
 import config
 import pandas as pd
 
-def output(file, text1, text2, text3, text4, text5, text6):
+def output(file, text1, text2, text3, text4, text5, text6, progress: gr.Progress = gr.Progress(track_tqdm=True)):
 
     output_text = "" 
 
     if file is None:
-        return "No file uploaded."
+        return gr.Error("No file uploaded.")
 
     file_path = file.name
     structured_data = utils.process_resume(file_path)
     if structured_data is None:
-        return "Unsupported file type."
+        return gr.Error("Unsupported file type.")
 
     prompt = f"""
     {{
@@ -27,26 +27,26 @@ def output(file, text1, text2, text3, text4, text5, text6):
         "resume": {structured_data}
     }}
     """
-
+    progress(0.5)
     output_text = utils.generate_email(prompt)
-    
+    progress(1)
+
     return output_text, output_text
 
-def bulk_output(excel, pdf):
+def bulk_output(excel, pdf, progress: gr.Progress = gr.Progress(track_tqdm=True)):
     if excel is None:
-        return "No file uploaded."
+        return gr.Error("No file uploaded.")
 
     excel_path = excel.name
     df = pd.read_excel(excel_path)
-    emails = []
 
     if pdf is None:
-        return "No file uploaded."
+        return gr.Error("No file uploaded.")
 
     file_path = pdf.name
     structured_data = utils.process_resume(file_path)
     if structured_data is None:
-        return "Unsupported file type."
+        return gr.Error("Unsupported file type.")
     
     for index, row in df.iterrows():
         prompt = f"""
@@ -63,6 +63,7 @@ def bulk_output(excel, pdf):
 
         email = utils.generate_email(prompt)
         config.write_email(row['Hiring Manager\'s Name'], row['Company Name'], email)
+        progress(index + 1, len(df))
 
     return "Emails have been drafted and saved as Word documents."
 
@@ -82,7 +83,7 @@ with gr.Blocks() as demo:
                     pdf_input = gr.File(label="Upload PDF", file_types=[".pdf", ".docx"], interactive=True, scale=1)
                     output_box = gr.Textbox(label="Output", lines=10, autoscroll=True)
                     write_btn = gr.Button("Draft Email")
-                    progress_bar = gr.Progress()
+                
 
             state = gr.State()
             submit_btn.click(output, inputs=[pdf_input, text1, text2, text3, text4, text5, text6], outputs=[output_box, state])
@@ -96,7 +97,6 @@ with gr.Blocks() as demo:
                     submit_btn = gr.Button("Submit and Draft")
                 with gr.Column(scale=0.5):
                     output_box = gr.Textbox(label="Output", lines=10, autoscroll=True)
-                    progress_bar = gr.Progress()
 
             submit_btn.click(bulk_output, inputs=[excel_input,pdf_input], outputs=[output_box])
 

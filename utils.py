@@ -1,4 +1,4 @@
-import json 
+import json
 import access_token
 import os
 import fitz  # PyMuPDF for PDF parsing
@@ -8,8 +8,9 @@ from google import genai
 from google.genai import types
 
 # API key as envirnomental varibale
-os.environ['GOOGLE_API_KEY'] = access_token.GOOGLE_API_KEY
+os.environ["GOOGLE_API_KEY"] = access_token.GOOGLE_API_KEY
 api_key = os.environ.get("GOOGLE_API_KEY")
+
 
 # Function to extract text from PDFs
 def extract_text_from_pdf(file_path):
@@ -19,10 +20,12 @@ def extract_text_from_pdf(file_path):
             text += page.get_text()
     return text
 
+
 # Function to extract text from DOCX files
 def extract_text_from_docx(file_path):
     doc = docx.Document(file_path)
     return "\n".join([para.text for para in doc.paragraphs])
+
 
 def process_resume(file_path):
     if file_path.endswith(".pdf"):
@@ -36,6 +39,7 @@ def process_resume(file_path):
     # Extract structured resume data
     structured_data = extract_resume_data(resume_text)
     return structured_data
+
 
 # Function to parse resume and extract structured data using Gemini
 def extract_resume_data(resume_text):
@@ -56,10 +60,11 @@ def extract_resume_data(resume_text):
 
     client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
-    model="gemini-2.0-flash",
-    contents= prompt,
+        model="gemini-2.0-flash",
+        contents=prompt,
     )
     return response.text  # Gemini will return structured JSON
+
 
 # Define the system instruction
 sys_instruct = """
@@ -91,13 +96,13 @@ Resume:
 
 """
 
+
 # Response Pipeline
 def generate_email(prompt):
     client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model="gemini-2.0-flash",
-        config=types.GenerateContentConfig(
-            system_instruction=sys_instruct),
-        contents=[prompt]
+        config=types.GenerateContentConfig(system_instruction=sys_instruct),
+        contents=[prompt],
     )
     return response.text
