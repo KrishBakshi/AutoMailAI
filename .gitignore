@@ -1,1 +1,4 @@
 access_token.py
+/output/
+/.gradio/
+/__pycache__/
