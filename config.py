@@ -98,6 +98,6 @@ Resume:
 """
 
 template = {
-    "A1": sys_instruct_gen,
-    "A2": sys_instruct_jap
+    "General": sys_instruct_gen,
+    "Japanese specific": sys_instruct_jap
 }

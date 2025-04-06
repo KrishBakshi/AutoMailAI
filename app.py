@@ -72,6 +72,9 @@ def bulk_output(excel, pdf, template, progress: gr.Progress = gr.Progress(track_
     if structured_data is None:
         return gr.Error("Unsupported or unreadable resume file.")
 
+    # Get the selected template value
+    selected_template = config.template[template]
+
     # Loop through each row and generate emails
     for _, row in tqdm(df.iterrows(), total=len(df), desc="Generating emails"):
         prompt = f"""
@@ -87,7 +90,7 @@ def bulk_output(excel, pdf, template, progress: gr.Progress = gr.Progress(track_
         """
 
         try:
-            email = utils.generate_email(prompt, config.template[template])
+            email = utils.generate_email(prompt, selected_template)
             config.write_email(row['Hiring Managers Name'], row['Company Name'], email)
         except Exception as e:
             return gr.Error(f"Error generating email for {row['Company Name']}: {str(e)}")
@@ -131,6 +134,8 @@ with gr.Blocks(css="body { background: #f8fafc; font-family: 'Inter'; }") as dem
                 with gr.Column(scale=1):
                     pdf_input = gr.File(label="Upload PDF", file_types=[".pdf", ".docx"], interactive=True, scale=1)
                     excel_input = gr.File(label="Upload Excel", file_types=[".xlsx", ".csv"], interactive=True, scale=1)
+                    with gr.Row():
+                        template = gr.Dropdown(choices=list(config.template.keys()), label="Select Email Template", interactive=True)
                     submit_btn = gr.Button("Submit and Draft")
                 with gr.Column(scale=1):
                     output_box = gr.Textbox(label="Output", lines=10, autoscroll=True)
