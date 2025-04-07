@@ -101,6 +101,10 @@ def generate_and_download(name, company, ai_email):
     file_path = config.write_email(name, company, ai_email)
     return file_path
 
+def bulk_generate_and_download():
+    zip_file_path = config.return_bulk_file()
+    return zip_file_path
+
 with gr.Blocks(css="body { background: #f8fafc; font-family: 'Inter'; }") as demo:
     with gr.Tabs():
         with gr.TabItem("Single Email"):
@@ -139,7 +143,13 @@ with gr.Blocks(css="body { background: #f8fafc; font-family: 'Inter'; }") as dem
                     submit_btn = gr.Button("Submit and Draft")
                 with gr.Column(scale=1):
                     output_box = gr.Textbox(label="Output", lines=10, autoscroll=True)
+                    with gr.Row():
+                        with gr.Column(scale=1):
+                            Zip_btn = gr.Button("Make Zip File")
+                        with gr.Column(scale=1):
+                            download_button = gr.File(label="Download ZIP File")
 
             submit_btn.click(bulk_output, inputs=[excel_input, pdf_input, template], outputs=[output_box])
+            Zip_btn.click(bulk_generate_and_download, inputs=[], outputs=[download_button])
 
 demo.launch()

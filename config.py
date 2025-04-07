@@ -2,6 +2,7 @@ from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
+import zipfile
 
 
 def write_email(name, company, ai_email):
@@ -33,6 +34,18 @@ def write_email(name, company, ai_email):
     doc.save(file_path)
 
     return file_path  # Return the file path for Gradio to use
+
+def return_bulk_file():
+    output_folder = "./output"
+    # Create a ZIP file of the output folder
+    zip_file_path = "./output.zip"
+    with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, _, files in os.walk(output_folder):
+            for file in files:
+                file_full_path = os.path.join(root, file)
+                zipf.write(file_full_path, os.path.relpath(file_full_path, output_folder))
+
+    return zip_file_path  # Return the ZIP file path for Gradio to use
 
 # Define the system instruction
 
