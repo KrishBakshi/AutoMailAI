@@ -7,6 +7,8 @@ import docx
 from google import genai
 from google.genai import types
 
+import gmail_api
+
 # API key as envirnomental varibale
 os.environ["GOOGLE_API_KEY"] = access_token.GOOGLE_API_KEY
 api_key = os.environ.get("GOOGLE_API_KEY")
@@ -75,3 +77,43 @@ def generate_email(prompt, template):
         contents=[prompt],
     )
     return response.text
+
+# Response to json
+def response_to_json(response_text):
+    lines = response_text.splitlines()
+    subject = ""
+    main_message = ""
+    message_started = False
+
+    for line in lines:
+        line = line.strip()
+        if line.startswith("Subject") and not subject:
+            subject = line
+        elif line.startswith("Dear") and not message_started:
+            message_started = True
+            main_message += line + "\n"
+        elif message_started:
+            main_message += line + "\n"
+
+    email_data = {
+        "subject": subject,
+        "main_message": main_message.strip()
+    }
+
+    return json.dumps(email_data, indent=4)
+
+def save_gmail_draft(response_text, file_path):
+   service = gmail_api.gmail_authenticate()
+
+   message_json = response_to_json(response_text)
+   
+   parsed_response = json.loads(message_json)
+
+   subject = parsed_response['subject']
+   body = parsed_response['main_message']
+
+   # Create the email message body
+   message_body = gmail_api.create_message(subject, body, file_path)
+   gmail_api.create_draft(service, 'me', message_body)
+
+   return "Draft email created successfully!, Please check your Gmail account."

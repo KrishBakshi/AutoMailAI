@@ -2,3 +2,5 @@ access_token.py
 /output/
 /.gradio/
 /__pycache__/
+credentials.json
+token.json
