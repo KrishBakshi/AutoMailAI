@@ -3,6 +3,8 @@
 AutoMailAI automates cold email generation for Jobs, Internships, Sales Outreach, or Research Proposals using Gemini 2.0 Flash. It takes user inputs, resume, and pre-defined templates to generate personalized emails — ready for download or auto-drafted in Gmail.
 
 ---
+## Demo
+Hugging Face: https://huggingface.co/spaces/krishbakshi/AutoMailAI
 
 ## Features
 
@@ -33,11 +35,6 @@ AutoMailAI automates cold email generation for Jobs, Internships, Sales Outreach
 - Research / Professor Outreach  
 - Automated Bulk Email Campaigns  
 
----
-
-## Demo
-
-[Insert Hugging Face Space / Gradio Link]
 
 ---
 
