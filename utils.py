@@ -1,5 +1,4 @@
 import json
-import access_token
 import os
 import fitz  # PyMuPDF for PDF parsing
 import docx
@@ -10,7 +9,6 @@ from google.genai import types
 import gmail_api
 
 # API key as envirnomental varibale
-os.environ["GOOGLE_API_KEY"] = access_token.GOOGLE_API_KEY
 api_key = os.environ.get("GOOGLE_API_KEY")
 
 

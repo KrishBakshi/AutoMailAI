@@ -1,7 +1,9 @@
 access_token.py
 /output/
 /.gradio/
-/__pycache__/
+__pycache__
 credentials.json
 token.json
 gmail_api.py
+.env
+.ipynb_checkpoints

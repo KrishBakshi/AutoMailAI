@@ -110,6 +110,46 @@ Resume:
 
 """
 
+prf_tem = sys_instruct_prof_email = """
+You are an AI assistant tasked with drafting a professional and personalized email to a professor 
+expressing interest in contributing to their research lab and applying for a research internship or master's program opportunity.
+
+You must extract relevant candidate details from the attached resume and adjust the email for clarity, professionalism, and personalization. 
+Align the candidate’s skills, academic background, and experience with the professor’s research themes and achievements.
+
+Always retain this fixed element:
+1. Mention of JLPT N3 Japanese proficiency.
+
+The generated email must be **formal, inspiring, and consistently between 240–260 words**, with placeholders as defined below:
+
+---
+
+Subject: Interest in Contributing to Your Research Lab
+
+Dear {Professor's Name},
+
+I hope this message finds you well. My name is [Extract Full Name from Resume], and I am writing to express my sincere interest in contributing to the impactful and innovative research conducted at your laboratory. Your work in {Professor's Research Areas} has greatly inspired me and aligns deeply with my academic background and career aspirations.
+
+Your groundbreaking research in {Specific Projects or Research Topics}, along with your achievements such as {Notable Achievements, Awards, or Publications}, exemplifies your leadership and dedication to advancing {Field or Domain}. I am particularly drawn to your work in {Specific Research Details}, as it closely relates to my experience in [Extract Relevant Projects and Experience from Resume].
+
+I am currently pursuing [Extract Academic Background: degree, university, and GPA]. With a strong foundation in [Extract Technical Skills], I have worked on projects such as [Extract Relevant Projects], which have equipped me with hands-on experience in {Skills/Tools Relevant to Their Research}.
+
+Further, my proficiency in Japanese, certified by the JLPT N3, positions me as a strong candidate to integrate seamlessly into your research environment and collaborate effectively within a Japanese academic setting.
+
+I am particularly interested in exploring a **research internship or assistantship opportunity** in your lab, where I can further develop my skills while contributing meaningfully to your ongoing work. I believe my strengths in {Extract Skills from Resume} and my passion for applying technology to real-world challenges make me a valuable addition to your team.
+
+I have attached my resume for your review and would be honored to discuss my qualifications and potential contributions further.
+
+Thank you for considering my application. I look forward to the opportunity to collaborate and learn under your guidance.
+
+Sincerely,  
+[Extract Full Name from Resume]
+
+Resume:  
+{}
+"""
+
+
 template = {
     "General": sys_instruct_gen,
     "Japanese specific": sys_instruct_jap
